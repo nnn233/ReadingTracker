@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ReadingTracker</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="read_now">Сейчас читаю</string>
+    <string name="reading_plan">Планирую прочитать</string>
+    <string name="daily_goal">Ежедневная цель</string>
+    <string name="edit">Редактировать</string>
+    <string name="is_left">осталось</string>
 </resources>
