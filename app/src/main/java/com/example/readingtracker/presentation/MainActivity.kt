@@ -1,7 +1,8 @@
-package com.example.readingtracker
+package com.example.readingtracker.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.readingtracker.R
 
 
 class MainActivity : AppCompatActivity() {
