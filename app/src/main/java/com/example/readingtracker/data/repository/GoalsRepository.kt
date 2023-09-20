@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GoalsRepository(private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default) {
-    private val _goals = MutableStateFlow(Goal(30, 50))
+    private val _goals = MutableStateFlow(Goal(null, null))
     val goals: Flow<Goal>
         get() = _goals
 }

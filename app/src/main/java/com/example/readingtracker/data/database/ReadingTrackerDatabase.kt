@@ -5,7 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.readingtracker.data.database.book.BookEntity
+import com.example.readingtracker.data.database.book_progress.LocalBookWithProgressDataSource
 import com.example.readingtracker.data.database.converters.BitmapConverter
+import com.example.readingtracker.data.database.daily_time.DailyReadingTimeEntity
+import com.example.readingtracker.data.database.daily_time.LocalDailyTimeDataSource
+import com.example.readingtracker.data.database.progress.ProgressEntity
+import com.example.readingtracker.data.database.review.ReviewEntity
 
 @Database(
     entities = [BookEntity::class, ProgressEntity::class, ReviewEntity::class, DailyReadingTimeEntity::class],
@@ -15,7 +21,7 @@ import com.example.readingtracker.data.database.converters.BitmapConverter
 @TypeConverters(BitmapConverter::class)
 abstract class ReadingTrackerDatabase : RoomDatabase() {
 
-    abstract val progressDao: LocalProgressDataSource
+    abstract val progressDao: LocalBookWithProgressDataSource
     abstract val dailyReadingDao: LocalDailyTimeDataSource
 
     companion object {

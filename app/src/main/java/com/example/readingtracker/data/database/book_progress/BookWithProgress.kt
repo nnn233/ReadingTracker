@@ -1,7 +1,9 @@
-package com.example.readingtracker.data.database
+package com.example.readingtracker.data.database.book_progress
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.example.readingtracker.data.database.book.BookEntity
+import com.example.readingtracker.data.database.progress.ProgressEntity
 
 data class BookWithProgress(
     @Embedded

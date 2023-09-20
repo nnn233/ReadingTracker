@@ -1,4 +1,4 @@
-package com.example.readingtracker.data.database
+package com.example.readingtracker.data.database.review
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

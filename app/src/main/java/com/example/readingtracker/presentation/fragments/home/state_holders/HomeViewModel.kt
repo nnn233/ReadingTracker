@@ -1,25 +1,24 @@
 package com.example.readingtracker.presentation.fragments.home.state_holders
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readingtracker.data.mappers.getCurrentDateInLong
-import com.example.readingtracker.data.mappers.toBookHomeState
-import com.example.readingtracker.data.repository.BooksInProgressRepository
-import com.example.readingtracker.data.repository.DailyTimeRepository
-import com.example.readingtracker.data.repository.GoalsRepository
-import com.example.readingtracker.data.repository.NotificationRepository
+import com.example.readingtracker.domain.books_with_progresses.GetCurrentBooksWithProgressesUseCase
+import com.example.readingtracker.domain.books_with_progresses.GetPlannedBooksWithProgressesUseCase
+import com.example.readingtracker.domain.daily_time.GetDailyReadingTimeByDateUseCase
+import com.example.readingtracker.domain.goals.GetGoalUseCase
+import com.example.readingtracker.domain.notification.GetNotificationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val booksInProgressRepository: BooksInProgressRepository,
-    private val notificationRepository: NotificationRepository,
-    private val goalsRepository: GoalsRepository,
-    private val dailyTimeRepository: DailyTimeRepository
-) :
-    ViewModel() {
+    private val currentBookUseCase: GetCurrentBooksWithProgressesUseCase,
+    private val plannedBookUseCase: GetPlannedBooksWithProgressesUseCase,
+    private val notificationUseCase: GetNotificationUseCase,
+    private val goalUseCase: GetGoalUseCase,
+    private val dailyTimeUseCase: GetDailyReadingTimeByDateUseCase
+) : ViewModel() {
+
     private val _homeUIState = MutableStateFlow(
         HomeUIState(
             notificationTime = null,
@@ -32,18 +31,24 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
-            booksInProgressRepository.booksInProgress
-                .collect { item ->
+            currentBookUseCase()
+                .collect { list ->
                     _homeUIState.value = _homeUIState.value.copy(
-                        notificationTime = null,
-                        currentBooks = item.filter { it.status == BookStatus.READ }
-                            .map { it.toBookHomeState() },
-                        plannedBooks = item.filter { it.status == BookStatus.PLANNED_READ }
-                            .map { it.toBookHomeState() })
+                        currentBooks = list
+                    )
+                }
+        }
+
+        viewModelScope.launch {
+            plannedBookUseCase()
+                .collect { list ->
+                    _homeUIState.value = _homeUIState.value.copy(
+                        plannedBooks = list
+                    )
                 }
         }
         viewModelScope.launch {
-            notificationRepository.notification
+            notificationUseCase()
                 .collect {
                     _homeUIState.value = _homeUIState.value.copy(
                         isNotificationOn = it.state,
@@ -52,18 +57,17 @@ class HomeViewModel(
                 }
         }
         viewModelScope.launch {
-            goalsRepository.goals.collect {
+            goalUseCase().collect {
                 _homeUIState.value = _homeUIState.value.copy(
                     dailyGoal = it.dailyGoal ?: 0
                 )
             }
         }
         viewModelScope.launch {
-            dailyTimeRepository.getTimePerDayByDate(getCurrentDateInLong()).collect {
+            dailyTimeUseCase().collect {
                 _homeUIState.value = _homeUIState.value.copy(
                     currentMinutes = it
                 )
-                Log.i("DailyTime", "$it")
             }
         }
     }

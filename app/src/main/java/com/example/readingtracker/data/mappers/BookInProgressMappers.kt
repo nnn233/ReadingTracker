@@ -1,6 +1,6 @@
 package com.example.readingtracker.data.mappers
 
-import com.example.readingtracker.data.database.BookWithProgress
+import com.example.readingtracker.data.database.book_progress.BookWithProgress
 import com.example.readingtracker.data.model.BookInProgress
 import com.example.readingtracker.presentation.fragments.home.state_holders.BookHomeState
 import com.example.readingtracker.presentation.fragments.home.state_holders.BookStatus
