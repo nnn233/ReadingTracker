@@ -34,8 +34,10 @@ class BooksViewController(
         lifecycleOwner.lifecycleScope.launch {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.homeUIState.collect {
-                    currentAdapter.items = it.currentBooks as MutableList<BookHomeState>
-                    plannedAdapter.items = it.plannedBooks as MutableList<BookHomeState>
+                    if(it.currentBooks.isNotEmpty())
+                        currentAdapter.items = it.currentBooks as MutableList<BookHomeState>
+                    if(it.plannedBooks.isNotEmpty())
+                        plannedAdapter.items = it.plannedBooks as MutableList<BookHomeState>
                 }
             }
         }

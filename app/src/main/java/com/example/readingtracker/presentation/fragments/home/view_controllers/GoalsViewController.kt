@@ -1,5 +1,6 @@
 package com.example.readingtracker.presentation.fragments.home.view_controllers
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,9 +35,15 @@ class GoalsViewController(
         lifecycleOwner.lifecycleScope.launch {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.homeUIState.collect {
-                    seekArc.progress =
-                        (it.currentMinutes / it.dailyGoal.toDouble() * HUNDRED_PERCENTS).toInt()
-                    restText.text = (it.dailyGoal - it.currentMinutes).toString()
+                    Log.i("DailyGoal", "${it.currentMinutes} from ${it.dailyGoal}")
+                    if(it.dailyGoal!=0) {
+                        seekArc.progress =
+                            (it.currentMinutes / it.dailyGoal.toDouble() * HUNDRED_PERCENTS).toInt()
+                        restText.text = (it.dailyGoal - it.currentMinutes).toString()
+                    }else{
+                        seekArc.progress = HUNDRED_PERCENTS
+                        restText.text = "0"
+                    }
                 }
             }
         }
