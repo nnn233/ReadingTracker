@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LocalDailyTimeDataSource {
     @Query("SELECT SUM(time) FROM daily_reading_time_table WHERE date=:date")
-    fun getReadingTimePerDay(date: Long): Flow<Int>
+    fun getReadingTimePerDay(date: Long): Flow<Int?>
 
     @Query("SELECT * FROM daily_reading_time_table")
     fun getTimes(): Flow<List<DailyReadingTimeEntity>>

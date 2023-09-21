@@ -6,6 +6,11 @@ import com.example.readingtracker.data.repository.BooksInProgressRepository
 import com.example.readingtracker.data.repository.DailyTimeRepository
 import com.example.readingtracker.data.repository.GoalsRepository
 import com.example.readingtracker.data.repository.NotificationRepository
+import com.example.readingtracker.domain.books_with_progresses.GetCurrentBooksWithProgressesUseCase
+import com.example.readingtracker.domain.books_with_progresses.GetPlannedBooksWithProgressesUseCase
+import com.example.readingtracker.domain.daily_time.GetDailyReadingTimeByDateUseCase
+import com.example.readingtracker.domain.goals.GetGoalUseCase
+import com.example.readingtracker.domain.notification.GetNotificationUseCase
 
 class ApplicationComponent(database: ReadingTrackerDatabase) {
     private val booksInProgressRepository =
@@ -14,10 +19,20 @@ class ApplicationComponent(database: ReadingTrackerDatabase) {
     private val notificationRepository = NotificationRepository()
     private val dailyTimeRepository = DailyTimeRepository(localDao = database.dailyReadingDao)
 
+    private val getCurrentBooksWithProgressesUseCase =
+        GetCurrentBooksWithProgressesUseCase(booksInProgressRepository)
+    private val getPlannedBooksWithProgressesUseCase =
+        GetPlannedBooksWithProgressesUseCase(booksInProgressRepository)
+    private val getGoalUseCase = GetGoalUseCase(goalsRepository)
+    private val getNotificationUseCase = GetNotificationUseCase(notificationRepository)
+    private val getDailyReadingTimeByDateUseCase =
+        GetDailyReadingTimeByDateUseCase(dailyTimeRepository)
+
     val viewModelFactory = ViewModelFactory(
-        booksInProgressRepository,
-        goalsRepository,
-        notificationRepository,
-        dailyTimeRepository
+        getCurrentBooksWithProgressesUseCase,
+        getPlannedBooksWithProgressesUseCase,
+        getNotificationUseCase,
+        getDailyReadingTimeByDateUseCase,
+        getGoalUseCase
     )
 }

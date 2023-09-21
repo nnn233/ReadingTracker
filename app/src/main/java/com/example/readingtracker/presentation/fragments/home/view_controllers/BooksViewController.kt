@@ -9,8 +9,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readingtracker.R
+import com.example.readingtracker.presentation.Status
 import com.example.readingtracker.presentation.fragments.home.recycler_view.BooksHomeAdapter
 import com.example.readingtracker.presentation.fragments.home.state_holders.BookHomeState
+import com.example.readingtracker.presentation.fragments.home.state_holders.HomeUIState
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -33,14 +35,21 @@ class BooksViewController(
     private fun setUpViewModel() {
         lifecycleOwner.lifecycleScope.launch {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.homeUIState.collect {
-                    if(it.currentBooks.isNotEmpty())
-                        currentAdapter.items = it.currentBooks as MutableList<BookHomeState>
-                    if(it.plannedBooks.isNotEmpty())
-                        plannedAdapter.items = it.plannedBooks as MutableList<BookHomeState>
+                viewModel.homeUIState.collect { result ->
+                    when (result.status) {
+                        Status.SUCCESS -> result.data?.let { setUpBooks(it) }
+                        else -> {}
+                    }
                 }
             }
         }
+    }
+
+    private fun setUpBooks(data: HomeUIState) {
+        if (data.currentBooks.isNotEmpty())
+            currentAdapter.items = data.currentBooks as MutableList<BookHomeState>
+        if (data.plannedBooks.isNotEmpty())
+            plannedAdapter.items = data.plannedBooks as MutableList<BookHomeState>
     }
 
     private fun setUpRecyclerViews() {

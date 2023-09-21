@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class GetDailyReadingTimeByDateUseCase(
     private val repository: DailyTimeRepository
 ) {
-    suspend operator fun invoke(): Flow<Int> =
+    suspend operator fun invoke(): Flow<Int?> =
         repository.getTimePerDayByDate(getCurrentDateInLong())
 }
