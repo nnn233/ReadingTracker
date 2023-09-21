@@ -6,7 +6,7 @@ import com.example.readingtracker.data.database.ReadingTrackerDatabase
 
 class ReadingTrackerApplication:Application() {
     private val database by lazy { ReadingTrackerDatabase.getDatabase(applicationContext) }
-    val applicationComponent by lazy { ApplicationComponent(database) }
+    val applicationComponent by lazy { ApplicationComponent(database, applicationContext) }
     companion object {
         fun get(context: Context): ReadingTrackerApplication = context.applicationContext as ReadingTrackerApplication
         lateinit var instance: ReadingTrackerApplication
