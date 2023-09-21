@@ -1,6 +1,8 @@
 package com.example.readingtracker.presentation.fragments.home.view_controllers
 
 import android.view.View
+import android.view.View.OnClickListener
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -18,16 +20,22 @@ import kotlinx.coroutines.launch
 
 class BooksViewController(
     private val fragment: FragmentActivity,
-    private val root: View,
+    root: View,
     private val currentAdapter: BooksHomeAdapter,
     private val plannedAdapter: BooksHomeAdapter,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: HomeViewModel
 ) {
-    private lateinit var recyclerViewCurrentBooks: RecyclerView
-    private lateinit var recyclerViewPlannedBooks: RecyclerView
+    private val recyclerViewCurrentBooks: RecyclerView =
+        root.findViewById(R.id.home_recycler_view_read_now)
+    private val recyclerViewPlannedBooks: RecyclerView =
+        root.findViewById(R.id.home_recycler_view_reading_plan)
+    private val addCurrent: TextView = root.findViewById(R.id.home_current_add)
+    private val addPlanned: TextView = root.findViewById(R.id.home_planned_add)
+
     fun setUpViews() {
         setUpRecyclerViews()
+        setUpAddButtons()
         setUpAdapterClickListener()
         setUpViewModel()
     }
@@ -46,18 +54,21 @@ class BooksViewController(
     }
 
     private fun setUpBooks(data: HomeUIState) {
-        if (data.currentBooks.isNotEmpty())
+        if (data.currentBooks.isNotEmpty()) {
             currentAdapter.items = data.currentBooks as MutableList<BookHomeState>
-        if (data.plannedBooks.isNotEmpty())
+            addCurrent.visibility = View.GONE
+        } else addCurrent.visibility = View.VISIBLE
+
+        if (data.plannedBooks.isNotEmpty()) {
             plannedAdapter.items = data.plannedBooks as MutableList<BookHomeState>
+            addPlanned.visibility = View.GONE
+        } else addPlanned.visibility = View.VISIBLE
     }
 
     private fun setUpRecyclerViews() {
-        recyclerViewCurrentBooks = root.findViewById(R.id.home_recycler_view_read_now)
         recyclerViewCurrentBooks.layoutManager = LinearLayoutManager(fragment)
         recyclerViewCurrentBooks.adapter = currentAdapter
 
-        recyclerViewPlannedBooks = root.findViewById(R.id.home_recycler_view_reading_plan)
         recyclerViewPlannedBooks.layoutManager = LinearLayoutManager(fragment)
         recyclerViewPlannedBooks.adapter = plannedAdapter
     }
@@ -78,5 +89,14 @@ class BooksViewController(
         override fun onLongClick(position: Int, id: Int) {
             //show popup menu
         }
+    }
+
+    private val onClickListenerForButton = OnClickListener {
+        //add book to list
+    }
+
+    private fun setUpAddButtons() {
+        addCurrent.setOnClickListener(onClickListenerForButton)
+        addPlanned.setOnClickListener(onClickListenerForButton)
     }
 }
