@@ -1,7 +1,9 @@
 package com.example.readingtracker.application.components
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.example.readingtracker.application.factories.ViewModelFactory
+import com.example.readingtracker.data.data_store.LocalGoals
 import com.example.readingtracker.data.data_store.LocalNotifications
 import com.example.readingtracker.data.database.ReadingTrackerDatabase
 import com.example.readingtracker.data.repository.BooksInProgressRepository
@@ -14,12 +16,18 @@ import com.example.readingtracker.domain.daily_time.GetDailyReadingTimeByDateUse
 import com.example.readingtracker.domain.goals.GetGoalUseCase
 import com.example.readingtracker.domain.notification.GetNotificationUseCase
 
-class ApplicationComponent(database: ReadingTrackerDatabase, context: Context) {
-    private val localNotifications = LocalNotifications(context)
+class ApplicationComponent(
+    database: ReadingTrackerDatabase,
+    dataStore: DataStore<Preferences>
+) {
+    private val localNotifications = LocalNotifications(dataStore)
+    private val localGoals = LocalGoals(dataStore)
+
     private val booksInProgressRepository =
         BooksInProgressRepository(localDao = database.progressDao)
-    private val goalsRepository = GoalsRepository()
-    private val notificationRepository = NotificationRepository(localNotifications = localNotifications)
+    private val goalsRepository = GoalsRepository(localGoals = localGoals)
+    private val notificationRepository =
+        NotificationRepository(localNotifications = localNotifications)
     private val dailyTimeRepository = DailyTimeRepository(localDao = database.dailyReadingDao)
 
     private val getCurrentBooksWithProgressesUseCase =
