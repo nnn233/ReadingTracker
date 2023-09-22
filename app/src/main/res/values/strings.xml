@@ -14,4 +14,7 @@
     <string name="book_cover">book_cover</string>
     <string name="start_reading">Начать</string>
     <string name="add">Добавить</string>
+    <string name="main">Главная</string>
+    <string name="library"><![CDATA[<Библиотека>]]></string>
+    <string name="statistics">Статистика</string>
 </resources>
