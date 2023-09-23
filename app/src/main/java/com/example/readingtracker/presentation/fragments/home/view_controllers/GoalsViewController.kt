@@ -1,14 +1,12 @@
 package com.example.readingtracker.presentation.fragments.home.view_controllers
 
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.readingtracker.R
+import com.example.readingtracker.databinding.FragmentHomeBinding
 import com.example.readingtracker.presentation.Status
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeUIState
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeViewModel
@@ -19,14 +17,12 @@ private const val HUNDRED_PERCENTS = 100
 
 class GoalsViewController(
     private val fragment: FragmentActivity,
-    root: View,
+    private val binding: FragmentHomeBinding,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: HomeViewModel
 ) {
-
-    private var editIcon: ImageView = root.findViewById(R.id.home_edit_goal)
-    private var seekArc: SeekArc = root.findViewById(R.id.home_seek_minutes)
-    private var restText: TextView = root.findViewById(R.id.home_goal_rest)
+    private var seekArc: SeekArc = binding.homeSeekMinutes
+    private var restText: TextView = binding.homeGoalRest
     fun setUpViews() {
         setUpEditIcon()
         setUpViewModel()
@@ -50,8 +46,7 @@ class GoalsViewController(
             seekArc.progress =
                 (it.currentMinutes / it.dailyGoal.toDouble() * HUNDRED_PERCENTS).toInt()
             restText.text = if (it.dailyGoal - it.currentMinutes >= 0)
-                (it.dailyGoal - it.currentMinutes).toString()
-            else "0"
+                (it.dailyGoal - it.currentMinutes).toString() else "0"
         } else {
             seekArc.progress = HUNDRED_PERCENTS
             restText.text = "0"
@@ -59,7 +54,7 @@ class GoalsViewController(
     }
 
     private fun setUpEditIcon() {
-        editIcon.setOnClickListener {
+        binding.homeEditGoal.setOnClickListener {
             // Implement dialog about editing goal
         }
     }

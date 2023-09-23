@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.readingtracker.R
 import com.example.readingtracker.application.components.ReadingTrackerApplication
+import com.example.readingtracker.databinding.FragmentHomeBinding
 import com.example.readingtracker.presentation.fragments.home.components.HomeFragmentComponent
 import com.example.readingtracker.presentation.fragments.home.components.HomeFragmentViewComponent
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeViewModel
@@ -15,6 +15,9 @@ import com.example.readingtracker.presentation.fragments.home.state_holders.Home
 class HomeFragment : Fragment() {
     private lateinit var fragmentComponent: HomeFragmentComponent
     private var fragmentViewComponent: HomeFragmentViewComponent? = null
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private val applicationComponent
         get() = ReadingTrackerApplication.get(requireContext()).applicationComponent
@@ -30,11 +33,12 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
         fragmentViewComponent = HomeFragmentViewComponent(
             fragmentComponent,
-            root = view,
+            binding = binding,
             lifecycleOwner = viewLifecycleOwner,
         ).apply {
             setUpViewControllers()
@@ -45,5 +49,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         fragmentViewComponent = null
+        _binding = null
     }
 }

@@ -1,7 +1,7 @@
 package com.example.readingtracker.presentation.fragments.home.components
 
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import com.example.readingtracker.databinding.FragmentHomeBinding
 import com.example.readingtracker.presentation.fragments.home.view_controllers.AppBarViewController
 import com.example.readingtracker.presentation.fragments.home.view_controllers.BooksViewController
 import com.example.readingtracker.presentation.fragments.home.view_controllers.GoalsViewController
@@ -9,33 +9,33 @@ import com.example.readingtracker.presentation.fragments.home.view_controllers.N
 
 class HomeFragmentViewComponent(
     fragmentComponent: HomeFragmentComponent,
-    root: View,
+    binding: FragmentHomeBinding,
     lifecycleOwner: LifecycleOwner,
 ) {
     private val goalsViewController = GoalsViewController(
         fragmentComponent.fragment,
-        root,
+        binding,
         lifecycleOwner,
         fragmentComponent.viewModel,
     )
 
     private val notificationViewController = NotificationViewController(
         fragmentComponent.fragment,
-        root,
+        binding,
         lifecycleOwner,
         fragmentComponent.viewModel,
     )
 
     private val booksViewController = BooksViewController(
         fragmentComponent.fragment,
-        root,
+        binding,
         fragmentComponent.currentBooksAdapter,
         fragmentComponent.plannedBooksAdapter,
         lifecycleOwner,
         fragmentComponent.viewModel,
     )
 
-    private val appBarViewController = AppBarViewController(root)
+    private val appBarViewController = AppBarViewController(binding)
 
     fun setUpViewControllers() {
         goalsViewController.setUpViews()

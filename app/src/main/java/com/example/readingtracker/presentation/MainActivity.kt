@@ -3,18 +3,20 @@ package com.example.readingtracker.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.readingtracker.R
+import com.example.readingtracker.databinding.ActivityMainBinding
 import com.example.readingtracker.presentation.fragments.home.HomeFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home_fragment -> {
                     createHomeFragment()

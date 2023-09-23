@@ -1,6 +1,5 @@
 package com.example.readingtracker.presentation.fragments.home.view_controllers
 
-import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -8,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.readingtracker.R
+import com.example.readingtracker.databinding.FragmentHomeBinding
 import com.example.readingtracker.presentation.Status
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeUIState
 import com.example.readingtracker.presentation.fragments.home.state_holders.HomeViewModel
@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 
 class NotificationViewController(
     private val fragment: FragmentActivity,
-    root: View,
+    root: FragmentHomeBinding,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: HomeViewModel
 ) {
-    private var mainText: TextView = root.findViewById(R.id.home_notification_text)
-    private var choiceText: TextView = root.findViewById(R.id.home_notification_choice)
+    private var mainText: TextView = root.homeNotificationText
+    private var choiceText: TextView = root.homeNotificationChoice
     fun setUpViews() {
         setUpViewModel()
         choiceText.setOnClickListener {

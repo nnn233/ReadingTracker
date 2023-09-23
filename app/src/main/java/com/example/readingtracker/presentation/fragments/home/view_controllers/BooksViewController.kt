@@ -2,15 +2,13 @@ package com.example.readingtracker.presentation.fragments.home.view_controllers
 
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.readingtracker.R
+import com.example.readingtracker.databinding.FragmentHomeBinding
 import com.example.readingtracker.presentation.Status
 import com.example.readingtracker.presentation.fragments.home.recycler_view.BooksHomeAdapter
 import com.example.readingtracker.presentation.fragments.home.state_holders.BookHomeState
@@ -20,19 +18,15 @@ import kotlinx.coroutines.launch
 
 class BooksViewController(
     private val fragment: FragmentActivity,
-    root: View,
+    private val binding: FragmentHomeBinding,
     private val currentAdapter: BooksHomeAdapter,
     private val plannedAdapter: BooksHomeAdapter,
     private val lifecycleOwner: LifecycleOwner,
     private val viewModel: HomeViewModel
 ) {
-    private val recyclerViewCurrentBooks: RecyclerView =
-        root.findViewById(R.id.home_recycler_view_read_now)
-    private val recyclerViewPlannedBooks: RecyclerView =
-        root.findViewById(R.id.home_recycler_view_reading_plan)
-    private val addCurrent: TextView = root.findViewById(R.id.home_current_add)
-    private val addPlanned: TextView = root.findViewById(R.id.home_planned_add)
 
+    private val addCurrent = binding.homeCurrentAdd
+    private val addPlanned = binding.homePlannedAdd
     fun setUpViews() {
         setUpRecyclerViews()
         setUpAddButtons()
@@ -66,11 +60,14 @@ class BooksViewController(
     }
 
     private fun setUpRecyclerViews() {
-        recyclerViewCurrentBooks.layoutManager = LinearLayoutManager(fragment)
-        recyclerViewCurrentBooks.adapter = currentAdapter
-
-        recyclerViewPlannedBooks.layoutManager = LinearLayoutManager(fragment)
-        recyclerViewPlannedBooks.adapter = plannedAdapter
+        binding.homeRecyclerViewReadNow.apply {
+            layoutManager = LinearLayoutManager(fragment)
+            adapter = currentAdapter
+        }
+        binding.homeRecyclerViewReadingPlan.apply {
+            layoutManager = LinearLayoutManager(fragment)
+            adapter = plannedAdapter
+        }
     }
 
     private fun setUpAdapterClickListener() {
